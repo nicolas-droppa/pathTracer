@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Path Tracer</title>
 
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+
     <link rel="icon" type="image/png" href="assets/favicon/favicon.ico">
 
     <link rel="stylesheet" href="styles/style.css">
@@ -26,10 +33,19 @@
             </div>
 
             <div class="control-panel">
-                <button>Start</button>
-                <button>Stop</button>
-                <button>Restart</button>
-                <div class="time-are">
+                <button id="startSimulationButton">
+                    <div class="image"><i class="fa-solid fa-play"></i></div>
+                    <div class="label">START</div>
+                </button>
+                <button id="pauseSimulationButton">
+                    <div class="image"><i class="fa-solid fa-pause"></i></div>
+                    <div class="label">PAUSE</div>
+                </button>
+                <button id="stopSimulationButton">
+                    <div class="image"><i class="fa-solid fa-stop"></i></div>
+                    <div class="label">STOP</div>
+                </button>
+                <div class="time-area">
                     <div class="label">Time</div>
                     <div class="time">00:00.00</div>    
                 </div>

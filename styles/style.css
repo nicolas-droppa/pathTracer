@@ -7,6 +7,7 @@
     --padding-size-s: .5rem;
 
     --text-color: #1a1a1a;
+    --text-color-white: #ffffff;
     --text-color-unimportant: #c0c0c0;
 
     --color-active: #2e2e2e;
@@ -15,7 +16,14 @@
     --background-color-complement: #fcfcfc;
     --background-color-complement-hover: #f1f1f1;
 
-    --color-border: #b9b9b9;
+    --start-sim-button-color: #80bbff;
+    --start-sim-button-color-hover: #75abe9;
+    --pause-sim-button-color: #fdc166;
+    --pause-sim-button-color-hover: #ecb35e;
+    --stop-sim-button-color: #ff6d59;
+    --stop-sim-button-color-hover: #ee6452;
+
+    --color-border: #dadada;
 
     --color-box-border: #f5f5f5;
 
@@ -55,11 +63,13 @@ body {
     background: var(--background-color-complement)!important;
 }
 
+.hidden {
+    display: none!important;
+}
+
 .vertical-area {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
 }
 
 .horizontal-area {
@@ -84,9 +94,51 @@ body {
 
 .control-panel {
     display: flex;
+    align-items: center;
     gap: 1rem;
     height: 5rem;
-    background-color: rgba(251, 255, 0, 0.103);
+    padding: 1rem;
+    border-top: .0625rem solid var(--color-border);
+    border-bottom: .0625rem solid var(--color-border);
+}
+
+.control-panel button{
+    font-size: var(--font-size-s);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+    width: 6rem;
+    height: 2rem;
+    border: none;
+    border-radius: .25rem;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background 0.1s;
+    font-weight: 500;
+    color: var(--text-color-white);
+}
+
+.control-panel button .image{
+    font-size: var(--font-size-m);
+    margin-right: 1rem;
+}
+
+#startSimulationButton { background: var(--start-sim-button-color); }
+#startSimulationButton:hover { background: var(--start-sim-button-color-hover); }
+#pauseSimulationButton { background: var(--pause-sim-button-color); }
+#pauseSimulationButton:hover { background: var(--pause-sim-button-color-hover); }
+#stopSimulationButton { background: var(--stop-sim-button-color); }
+#stopSimulationButton:hover { background: var(--stop-sim-button-color-hover); }
+
+.time-area {
+    margin-left: 2rem;
+}
+
+.time-area .label {
+    font-size: var(--font-size-s);
+    color: var(--text-color-unimportant);
 }
 
 .asset-selection-area {
@@ -101,6 +153,7 @@ body {
 
 #displayArea {
     display: block;
+    padding: 1rem;
 }
 
 /*
