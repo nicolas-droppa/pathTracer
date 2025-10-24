@@ -61,6 +61,13 @@ main {
     background-color: rgba(51, 255, 0, 0.103);
 }
 
+.control-panel {
+    display: flex;
+    gap: 1rem;
+    height: 5rem;
+    background-color: rgba(251, 255, 0, 0.103);
+}
+
 .asset-selection-area {
     display: flex;
     gap: 1rem;
