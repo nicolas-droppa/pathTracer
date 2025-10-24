@@ -15,6 +15,20 @@ let pointsOfInterest = {
     wallTiles: []
 }
 
+const tileMap = {
+    ground: 'tile-ground',
+    wall: 'tile-wall',
+    start: 'tile-start',
+    finish: 'tile-finish'
+};
+
+const buttonMap = {
+    selectGroundButton: 'ground',
+    selectWallButton: 'wall',
+    selectStartButton: 'start',
+    selectFinishButton: 'finish'
+};
+
 let currentSelection = null;
 
 function renderGrid(rows, columns, type = "ground") {
@@ -39,52 +53,91 @@ function renderGrid(rows, columns, type = "ground") {
 }
 
 function insertStart(positionX = null, positionY = null) {
-    const position = insertTile('start', positionX, positionY);
+    const position = insertTile('start', positionX, positionY, true);
     pointsOfInterest.goundTiles = pointsOfInterest.goundTiles.filter(tile => !(tile.x === position.x && tile.y === position.y));
 }
 
 function insertFinish(positionX = null, positionY = null) {
-    const position = insertTile('finish', positionX, positionY);
+    const position = insertTile('finish', positionX, positionY, true);
     pointsOfInterest.goundTiles = pointsOfInterest.goundTiles.filter(tile => !(tile.x === position.x && tile.y === position.y));
 }
 
-function insertTile(kind, positionX = null, positionY = null) {
+function insertTile(kind, positionX = null, positionY = null, isSingle = true) {
     if (!displayArea) return;
 
     const numRows = displayArea.children.length;
 
-    let rowIndex;
-    let colIndex;
+    let rowIndex = positionY !== null ? Number(positionY) : getRandomNumber(0, numRows - 1);
+    let row = displayArea.children[rowIndex];
+    let numCols = row.children.length;
+    let colIndex = positionX !== null ? Number(positionX) : getRandomNumber(0, numCols - 1);
 
-    if (positionX !== null && positionY !== null) {
-        rowIndex = Number(positionY);
-        colIndex = Number(positionX);
-    } else {
-        rowIndex = getRandomNumber(0, numRows - 1);
-        const row = displayArea.children[rowIndex];
-        const numCols = row.children.length;
-        colIndex = getRandomNumber(0, numCols - 1);
-    }
+    const tile = row.children[colIndex];
 
-    const tile = displayArea.children[rowIndex].children[colIndex];
+    if (tile.classList.contains(`tile-${kind}`)) return { x: colIndex, y: rowIndex };
 
-    const prev = displayArea.querySelector(`.tile-${kind}`);
-    if (prev) {
-        prev.classList.remove(`tile-${kind}`);
-        delete prev.dataset[kind];
+    for (const type of Object.keys(tileMap)) {
+        tile.classList.remove(`tile-${type}`);
     }
 
     tile.classList.add(`tile-${kind}`);
-    tile.dataset[kind] = "true";
 
-    pointsOfInterest[kind].x = colIndex;
-    pointsOfInterest[kind].y = rowIndex;
+    if (kind === 'start' || kind === 'finish') {
+        let oldStartPosition = pointsOfInterest[kind];
 
-    console.log(`${kind.charAt(0).toUpperCase() + kind.slice(1)} placed at`, { row: rowIndex, col: colIndex });
+        if (oldStartPosition.x !== null && oldStartPosition.y !== null) {
+            const oldRow = displayArea.children[oldStartPosition.y];
+            const oldTile = oldRow.children[oldStartPosition.x];
+            oldTile.classList.remove(`tile-${kind}`);
+            oldTile.classList.add('tile-ground');
+            pointsOfInterest.goundTiles.push({ x: oldStartPosition.x, y: oldStartPosition.y });
+        }
 
+        pointsOfInterest[kind].x = colIndex;
+        pointsOfInterest[kind].y = rowIndex;
+
+        // remove from groundTiles, wallTiles and start/finish if it was there
+        pointsOfInterest.wallTiles = pointsOfInterest.wallTiles.filter(t => !(t.x === colIndex && t.y === rowIndex));
+        pointsOfInterest.goundTiles = pointsOfInterest.goundTiles.filter(t => !(t.x === colIndex && t.y === rowIndex));
+        if (kind === 'start' && pointsOfInterest.finish.x === colIndex && pointsOfInterest.finish.y === rowIndex) pointsOfInterest.finish = { x: null, y: null };
+        if (kind === 'finish' && pointsOfInterest.start.x === colIndex && pointsOfInterest.start.y === rowIndex) pointsOfInterest.start = { x: null, y: null };
+    }
+
+    if (kind === 'ground') {
+        const existsInGround = pointsOfInterest.goundTiles.some(t => t.x === colIndex && t.y === rowIndex);  // is tile in groundTiles?
+        if (!existsInGround) {
+            pointsOfInterest.goundTiles.push({ x: colIndex, y: rowIndex }); // add to groundTiles
+        }
+
+        // remove from wallTiles, start and finish if it was there
+        pointsOfInterest.wallTiles = pointsOfInterest.wallTiles.filter(t => !(t.x === colIndex && t.y === rowIndex));
+        if (pointsOfInterest.start.x === colIndex && pointsOfInterest.start.y === rowIndex) {
+            pointsOfInterest.start = { x: null, y: null };
+        }
+        if (pointsOfInterest.finish.x === colIndex && pointsOfInterest.finish.y === rowIndex) {
+            pointsOfInterest.finish = { x: null, y: null };
+        }
+    }
+
+    if (kind === 'wall') {
+        const existsInWall = pointsOfInterest.wallTiles.some(t => t.x === colIndex && t.y === rowIndex); // is tile in wallTiles?
+        if (!existsInWall) {
+            pointsOfInterest.wallTiles.push({ x: colIndex, y: rowIndex }); // add to wallTiles
+        }
+
+        // remove from groundTiles, start and finish if it was there
+        pointsOfInterest.goundTiles = pointsOfInterest.goundTiles.filter(t => !(t.x === colIndex && t.y === rowIndex));
+        if (pointsOfInterest.start.x === colIndex && pointsOfInterest.start.y === rowIndex) {
+            pointsOfInterest.start = { x: null, y: null };
+        }
+        if (pointsOfInterest.finish.x === colIndex && pointsOfInterest.finish.y === rowIndex) {
+            pointsOfInterest.finish = { x: null, y: null };
+        }
+    }
+
+    console.log(`${kind} placed at`, { x: colIndex, y: rowIndex });
     return { x: colIndex, y: rowIndex };
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     displayArea = document.getElementById('displayArea');
@@ -92,4 +145,35 @@ document.addEventListener('DOMContentLoaded', () => {
     insertStart();
     insertFinish();
     console.log(pointsOfInterest);
+
+    for (const [id, type] of Object.entries(buttonMap)) {
+        const button = document.getElementById(id);
+        button.addEventListener('click', () => {
+            if (currentSelection === type) {
+                currentSelection = null;
+                console.log(`Deselected ${type} tile`);
+            } else {
+                currentSelection = type;
+                console.log(`Selected ${type} tile for placement`);
+            }
+        });
+    }
+
+    for (const [type, className] of Object.entries(tileMap)) {
+        displayArea.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('tile') && currentSelection === type) {
+                const rowIndex = Number(target.dataset.row);
+                const colIndex = Number(target.dataset.col);
+                if (type === 'start') insertStart(colIndex, rowIndex);
+                else if (type === 'finish') insertFinish(colIndex, rowIndex);
+                else insertTile(type, colIndex, rowIndex);
+            }
+        });
+    }
+
+    let debugButton = document.getElementById('debug');
+    debugButton.addEventListener('click', () => {
+        console.log('Points of Interest:', pointsOfInterest);
+    });
 });

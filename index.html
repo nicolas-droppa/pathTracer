@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Path Tracer</title>
 
+    <link rel="icon" type="image/png" href="assets/favicon/favicon.ico">
+
     <link rel="stylesheet" href="styles/style.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -38,10 +40,11 @@
 
         <div class="horizontal-area">
             <div class="asset-selection-area">
-                <button>Ground</button>
-                <button>Wall</button>
-                <button>Start</button>
-                <button>Finish</button>
+                <button id="selectGroundButton">Ground</button>
+                <button id="selectWallButton">Wall</button>
+                <button id="selectStartButton">Start</button>
+                <button id="selectFinishButton">Finish</button>
+                <button id="debug">DEBUG</button>
             </div>
 
             <div class="display-area" id="displayArea"></div>
