@@ -148,12 +148,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (const [id, type] of Object.entries(buttonMap)) {
         const button = document.getElementById(id);
+
         button.addEventListener('click', () => {
             if (currentSelection === type) {
                 currentSelection = null;
+                button.classList.remove("active-bg-color");
+                button.firstElementChild.classList.remove("active-text-color");
                 console.log(`Deselected ${type} tile`);
             } else {
+                Object.keys(buttonMap).forEach(key => {
+                    const btn = document.getElementById(key);
+                    btn.classList.remove("active-bg-color");
+                    btn.firstElementChild.classList.remove("active-text-color");
+                });
+
                 currentSelection = type;
+                button.classList.add("active-bg-color");
+                button.firstElementChild.classList.add("active-text-color");
                 console.log(`Selected ${type} tile for placement`);
             }
         });

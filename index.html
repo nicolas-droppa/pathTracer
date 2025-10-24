@@ -8,8 +8,6 @@
     <link rel="icon" type="image/png" href="assets/favicon/favicon.ico">
 
     <link rel="stylesheet" href="styles/style.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <main>
@@ -40,11 +38,26 @@
 
         <div class="horizontal-area">
             <div class="asset-selection-area">
-                <button id="selectGroundButton">Ground</button>
-                <button id="selectWallButton">Wall</button>
-                <button id="selectStartButton">Start</button>
-                <button id="selectFinishButton">Finish</button>
-                <button id="debug">DEBUG</button>
+                <button id="selectGroundButton">
+                    <div class="label">Ground</div>
+                    <div class="image"></div>
+                </button>
+                <button id="selectWallButton">
+                    <div class="label">Wall</div>
+                    <div class="image"></div>
+                </button>
+                <button id="selectStartButton">
+                    <div class="label">Start</div>
+                    <div class="image"></div>
+                </button>
+                <button id="selectFinishButton">
+                    <div class="label">Finish</div>
+                    <div class="image"></div>
+                </button>
+                <button id="debug">
+                    <div class="label">DEBUG</div>
+                    <div class="image"></div>
+                </button>
             </div>
 
             <div class="display-area" id="displayArea"></div>

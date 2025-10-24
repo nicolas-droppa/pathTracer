@@ -7,8 +7,15 @@
     --padding-size-s: .5rem;
 
     --text-color: #1a1a1a;
+    --text-color-unimportant: #c0c0c0;
+
+    --color-active: #2e2e2e;
 
     --background-color: #f5f5f5;
+    --background-color-complement: #fcfcfc;
+    --background-color-complement-hover: #f1f1f1;
+
+    --color-border: #b9b9b9;
 
     --color-box-border: #f5f5f5;
 
@@ -40,8 +47,12 @@ body {
     color: var(--text-color);
 }
 
-main {
-    padding: 1rem;
+.active-text-color {
+    color: var(--color-active);
+}
+
+.active-bg-color {
+    background: var(--background-color-complement)!important;
 }
 
 .vertical-area {
@@ -81,9 +92,11 @@ main {
 .asset-selection-area {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    width: 5rem;
-    background-color: rgba(0, 0, 255, 0.041);
+    gap: .5rem;
+    width: 6rem;
+    padding: 1rem;
+    border-right: .0625rem solid var(--color-border);
+    /* background-color: rgba(0, 0, 255, 0.041); */
 }
 
 #displayArea {
@@ -132,4 +145,62 @@ main {
 }
 .tile-finish:hover {
     background-color: var(--color-finish-hover);
+}
+
+/*
+*   TILE BUTTONS
+*/
+
+.asset-selection-area button {
+    font-size: var(--font-size-s);
+    color: var(--text-color-unimportant);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    background: none;
+    transition: background 0.1s;
+}
+
+.asset-selection-area button:hover {
+    background: var(--background-color-complement-hover)!important;
+}
+
+.asset-selection-area button .label {
+    position: absolute;
+    top: .25rem;
+    left: .25rem;
+}
+
+.asset-selection-area button .image {
+    width: 1.5rem;
+    height: 1.5rem;
+    box-sizing: border-box;
+    margin-top: .5rem;
+}
+
+#selectGroundButton .image {
+    background-color: var(--color-ground);
+}
+
+#selectWallButton .image {
+    background-color: var(--color-wall);
+}
+
+#selectStartButton .image {
+    background-color: var(--color-start);
+}
+
+#selectFinishButton .image {
+    background-color: var(--color-finish);
+}
+
+#debug .image {
+    background-color: #ff9811;
 }
