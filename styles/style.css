@@ -13,6 +13,16 @@
     --color-box-border: #f5f5f5;
 
     --color-ground: #e2e2e2;
+    --color-ground-hover: #cecdcd;
+
+    --color-wall: #201d1d;
+    --color-wall-hover: #0c0b0b;
+
+    --color-start: #70ff63;
+    --color-start-hover: #61dd56;
+
+    --color-finish: #ff5e5e;
+    --color-finish-hover: #db5050;
 }
 
 .dark-mode {
@@ -70,6 +80,7 @@ main {
 
 .asset-selection-area {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
     width: 5rem;
     background-color: rgba(0, 0, 255, 0.041);
@@ -79,10 +90,46 @@ main {
     display: block;
 }
 
-.ground-square {
+/*
+*   TILE SQUARES
+*/
+
+.tile {
     width: 3rem;
     height: 3rem;
     border: .0625rem solid var(--color-box-border);
     box-sizing: border-box;
+    transition: background-color 0.2s, border-radius 0.2s;
+}
+
+.tile:hover {
+    border-radius: .25rem;
+}
+
+.tile-ground {
     background-color: var(--color-ground);
+}
+.tile-ground:hover {
+    background-color: var(--color-ground-hover);
+}
+
+.tile-wall {
+    background-color: var(--color-wall);
+}
+.tile-wall:hover {
+    background-color: var(--color-wall-hover);
+}
+
+.tile-start {
+    background-color: var(--color-start);
+}
+.tile-start:hover {
+    background-color: var(--color-start-hover);
+}
+
+.tile-finish {
+    background-color: var(--color-finish);
+}
+.tile-finish:hover {
+    background-color: var(--color-finish-hover);
 }
