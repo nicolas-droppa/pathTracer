@@ -1,5 +1,6 @@
 import { getRandomNumber } from "./utilities.js";
 import { startTimer, stopTimer, resetTimer } from "./timer.js";
+import { setSpeedMultiplier, getSpeedMultiplier } from "./speedMultiplier.js";
 
 let displayArea = null;
 
@@ -212,5 +213,45 @@ document.addEventListener('DOMContentLoaded', () => {
         startSimulationButton.classList.remove('hidden');
         stopTimer();
         resetTimer();
+    });
+
+    // Speed control UI (up/down buttons and numeric input 1..5)
+    const speedUp = document.getElementById('speedUp');
+    const speedDown = document.getElementById('speedDown');
+    const speedValue = document.getElementById('speedValue');
+
+    function clampSpeed(n) {
+        if (!Number.isFinite(n)) return 1;
+        n = Math.round(n);
+        if (n < 1) return 1;
+        if (n > 5) return 5;
+        return n;
+    }
+
+    // initialize UI from current multiplier
+    speedValue.value = clampSpeed(getSpeedMultiplier());
+
+    speedUp.addEventListener('click', () => {
+        const current = clampSpeed(Number(speedValue.value));
+        const next = clampSpeed(current + 1);
+        speedValue.value = next;
+        setSpeedMultiplier(next);
+        console.log('Speed set to', next);
+    });
+
+    speedDown.addEventListener('click', () => {
+        const current = clampSpeed(Number(speedValue.value));
+        const next = clampSpeed(current - 1);
+        speedValue.value = next;
+        setSpeedMultiplier(next);
+        console.log('Speed set to', next);
+    });
+
+    // allow typing an integer and clamp on blur/change
+    speedValue.addEventListener('change', () => {
+        let v = clampSpeed(Number(speedValue.value));
+        speedValue.value = v;
+        setSpeedMultiplier(v);
+        console.log('Speed set to', v);
     });
 });

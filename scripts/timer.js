@@ -1,6 +1,10 @@
+import { getSpeedMultiplier } from "./speedMultiplier.js";
+
 let timerElement = null;
-let _startTime = 0;
-let _elapsed = 0;
+// _lastRealTime stores the last performance.now() time we sampled while running
+let _lastRealTime = 0;
+// _simulatedElapsed stores the accumulated simulated time (ms), i.e. sum of real deltas * multiplier
+let _simulatedElapsed = 0;
 let _running = false;
 let _rafId = null;
 
@@ -52,8 +56,13 @@ export function updateTimerDisplay(milliseconds) {
 function _tick() {
     if (!_running) return;
     const now = performance.now();
-    const elapsed = now - _startTime + _elapsed;
-    updateTimerDisplay(Math.floor(elapsed));
+    // compute real time delta since last tick
+    const realDelta = now - _lastRealTime;
+    const multiplier = getSpeedMultiplier();
+    // accumulate simulated elapsed time (only affects future progression)
+    _simulatedElapsed += realDelta * multiplier;
+    _lastRealTime = now;
+    updateTimerDisplay(Math.floor(_simulatedElapsed));
     _rafId = requestAnimationFrame(_tick);
 }
 
@@ -63,7 +72,7 @@ function _tick() {
 export function startTimer() {
     if (_running) return;
     _running = true;
-    _startTime = performance.now();
+    _lastRealTime = performance.now();
     _rafId = requestAnimationFrame(_tick);
 }
 
@@ -75,9 +84,12 @@ export function stopTimer() {
     _running = false;
     if (_rafId) cancelAnimationFrame(_rafId);
     const now = performance.now();
-    _elapsed = now - _startTime + _elapsed;
+    // add final slice
+    const realDelta = now - _lastRealTime;
+    _simulatedElapsed += realDelta * getSpeedMultiplier();
+    _lastRealTime = 0;
     _rafId = null;
-    updateTimerDisplay(Math.floor(_elapsed));
+    updateTimerDisplay(Math.floor(_simulatedElapsed));
 }
 
 /**
@@ -87,8 +99,8 @@ export function resetTimer() {
     _running = false;
     if (_rafId) cancelAnimationFrame(_rafId);
     _rafId = null;
-    _startTime = 0;
-    _elapsed = 0;
+    _lastRealTime = 0;
+    _simulatedElapsed = 0;
     updateTimerDisplay(0);
 }
 
@@ -99,9 +111,11 @@ export function resetTimer() {
  */
 export function getElapsed() {
     if (_running) {
-        return performance.now() - _startTime + _elapsed;
+        const now = performance.now();
+        const realDelta = now - _lastRealTime;
+        return _simulatedElapsed + realDelta * getSpeedMultiplier();
     }
-    return _elapsed;
+    return _simulatedElapsed;
 }
 
 
