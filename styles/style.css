@@ -24,8 +24,8 @@
     --stop-sim-button-color-hover: #ee6452;
 
     --speed-button-color: #8267ff;
-    --speed-button-color-hover: #755ce4;
-    --speed-button-color-active: #bb29ff;
+    --speed-button-color-hover: #5f4bb8;
+    --speed-button-color-active: #6247dd;
 
     --color-border: #dadada;
 
@@ -269,36 +269,34 @@ body {
 .speed-area {
     display: flex;
     flex-direction: flex;
-    gap: .5rem;
     font-size: var(--font-size-s);
     color: var(--text-color-unimportant);
+    margin-left: 2rem;
 }
 
-.speed-area .speed-text {
+.speed-buttons {
     display: flex;
-    flex-direction: column;
+    gap: .25rem;
+    margin-top: .15rem;
 }
 
-.speed-area .speed-controls {
-    display: flex;
-    flex-direction: column;
-}
-
-.speed-area .speed-controls button {
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: var(--font-size-s);
-    border: none;
-    box-sizing: border-box;
+.speed-button {
+    border-radius: .35rem;
+    outline: .0625rem solid var(--speed-button-color);
+    background: transparent;
+    color: var(--speed-button-color);
+    width: 1rem!important;
+    height: 1rem!important;
     cursor: pointer;
-    background: var(--speed-button-color);
-    transition: background 0.1s;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    transition: background 0.12s, outline 0.12s;
 }
 
-.speed-area .buttons button:hover {
-    background: var(--speed-button-color-hover);
+.speed-button:hover {
+    background: var(--speed-button-color-hover)!important;
+    outline: .0625rem solid var(--speed-button-color)!important;
+}
+
+.speed-button.selected {
+    background: var(--speed-button-color-active);
+    color: var(--text-color-white);
 }

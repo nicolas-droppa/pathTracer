@@ -215,43 +215,24 @@ document.addEventListener('DOMContentLoaded', () => {
         resetTimer();
     });
 
-    // Speed control UI (up/down buttons and numeric input 1..5)
-    const speedUp = document.getElementById('speedUp');
-    const speedDown = document.getElementById('speedDown');
-    const speedValue = document.getElementById('speedValue');
+    const speedButtons = Array.from(document.querySelectorAll('.speed-button'));
 
-    function clampSpeed(n) {
-        if (!Number.isFinite(n)) return 1;
-        n = Math.round(n);
-        if (n < 1) return 1;
-        if (n > 5) return 5;
-        return n;
+    function updateSpeedButtonsUI(selectedSpeed) {
+        speedButtons.forEach(btn => {
+            const s = Number(btn.dataset.speed) || 1;
+            if (s <= selectedSpeed) btn.classList.add('selected');
+            else btn.classList.remove('selected');
+        });
     }
 
-    // initialize UI from current multiplier
-    speedValue.value = clampSpeed(getSpeedMultiplier());
+    updateSpeedButtonsUI(getSpeedMultiplier());
 
-    speedUp.addEventListener('click', () => {
-        const current = clampSpeed(Number(speedValue.value));
-        const next = clampSpeed(current + 1);
-        speedValue.value = next;
-        setSpeedMultiplier(next);
-        console.log('Speed set to', next);
-    });
-
-    speedDown.addEventListener('click', () => {
-        const current = clampSpeed(Number(speedValue.value));
-        const next = clampSpeed(current - 1);
-        speedValue.value = next;
-        setSpeedMultiplier(next);
-        console.log('Speed set to', next);
-    });
-
-    // allow typing an integer and clamp on blur/change
-    speedValue.addEventListener('change', () => {
-        let v = clampSpeed(Number(speedValue.value));
-        speedValue.value = v;
-        setSpeedMultiplier(v);
-        console.log('Speed set to', v);
+    speedButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const v = Number(btn.dataset.speed) || 1;
+            setSpeedMultiplier(v);
+            updateSpeedButtonsUI(v);
+            console.log('Speed set to', v);
+        });
     });
 });
