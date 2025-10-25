@@ -172,6 +172,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const algorithmButtons = Array.from(document.querySelectorAll('.algorithm-selection-area button'));
+    let currentAlgorithm = null;
+
+    function setAlgorithmButton(btn) {
+        if (!btn) return;
+        algorithmButtons.forEach(b => {
+            b.classList.remove("algorithm-active-button");
+        });
+        btn.classList.add("algorithm-active-button");
+        currentAlgorithm = btn.dataset.algo || btn.id || btn.textContent.trim();
+        console.log('Algorithm selected:', currentAlgorithm);
+    }
+
+    const defaultAlgoBtn = document.querySelector('.algorithm-selection-area button[data-algo="bfs"]') || algorithmButtons[0];
+    setAlgorithmButton(defaultAlgoBtn);
+
+    algorithmButtons.forEach(btn => {
+        btn.addEventListener('click', () => setAlgorithmButton(btn));
+    });
+
     for (const [type, className] of Object.entries(tileMap)) {
         displayArea.addEventListener('click', (event) => {
             const target = event.target;
