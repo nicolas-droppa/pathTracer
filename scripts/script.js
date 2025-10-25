@@ -1,4 +1,5 @@
 import { getRandomNumber } from "./utilities.js";
+import { startTimer, stopTimer, resetTimer } from "./timer.js";
 
 let displayArea = null;
 
@@ -186,5 +187,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let debugButton = document.getElementById('debug');
     debugButton.addEventListener('click', () => {
         console.log('Points of Interest:', pointsOfInterest);
+    });
+
+    let startSimulationButton = document.getElementById('startSimulationButton');
+    startSimulationButton.addEventListener('click', () => {
+        console.log('Starting simulation...');
+        startSimulationButton.classList.add('hidden');
+        pauseSimulationButton.classList.remove('hidden');
+        startTimer();
+    });
+
+    let pauseSimulationButton = document.getElementById('pauseSimulationButton');
+    pauseSimulationButton.addEventListener('click', () => {
+        console.log('Pausing simulation...');
+        pauseSimulationButton.classList.add('hidden');
+        startSimulationButton.classList.remove('hidden');
+        stopTimer();
+    });
+
+    let stopSimulationButton = document.getElementById('stopSimulationButton');
+    stopSimulationButton.addEventListener('click', () => {
+        console.log('Stopping simulation...');
+        pauseSimulationButton.classList.add('hidden');
+        startSimulationButton.classList.remove('hidden');
+        stopTimer();
+        resetTimer();
     });
 });
