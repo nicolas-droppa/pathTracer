@@ -1,6 +1,7 @@
 import { getRandomNumber } from "./utilities.js";
 import { startTimer, stopTimer, resetTimer } from "./timer.js";
 import { setSpeedMultiplier, getSpeedMultiplier } from "./speedMultiplier.js";
+import { BFS } from "./algorithms/bfs.js";
 
 let displayArea = null;
 
@@ -211,11 +212,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     let startSimulationButton = document.getElementById('startSimulationButton');
-    startSimulationButton.addEventListener('click', () => {
+    startSimulationButton.addEventListener('click', async () => {
         console.log('Starting simulation...');
         startSimulationButton.classList.add('hidden');
         pauseSimulationButton.classList.remove('hidden');
         startTimer();
+        while (true) {
+            let val = BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles);
+            console.log('BFS returned:', val);
+            if (val) break;
+        }
     });
 
     let pauseSimulationButton = document.getElementById('pauseSimulationButton');

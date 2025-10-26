@@ -243,6 +243,15 @@ body {
     background-color: var(--color-finish-hover);
 }
 
+/* Visited and path styling */
+.tile-visited {
+    background-color: #7fb3ff !important; /* light blue */
+}
+
+.tile-path {
+    background-color: #2b7be9 !important; /* darker blue for final path */
+}
+
 /*
 *   TILE BUTTONS
 */
