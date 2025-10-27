@@ -218,9 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
         pauseSimulationButton.classList.remove('hidden');
         startTimer();
         while (true) {
-            let val = BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles);
-            console.log('BFS returned:', val);
-            if (val) break;
+            if (BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles)) break;
+            await new Promise(resolve => setTimeout(resolve, 50));
         }
     });
 

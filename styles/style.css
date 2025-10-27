@@ -46,6 +46,9 @@
 
     --color-finish: #ff5e5e;
     --color-finish-hover: #db5050;
+
+    --color-visited: #85e1f8;
+    --color-path: #ffd700;
 }
 
 .dark-mode {
@@ -243,13 +246,14 @@ body {
     background-color: var(--color-finish-hover);
 }
 
-/* Visited and path styling */
-.tile-visited {
-    background-color: #7fb3ff !important; /* light blue */
+.visited-tile {
+    background-color: var(--color-visited) !important;
+    transition: background-color 0.5s;
 }
 
-.tile-path {
-    background-color: #2b7be9 !important; /* darker blue for final path */
+.path-tile {
+    background-color: var(--color-path) !important;
+    transition: background-color 0.5s;
 }
 
 /*
