@@ -201,7 +201,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     for (const [type, className] of Object.entries(tileMap)) {
+        //click to place
         displayArea.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('tile') && currentSelection === type) {
+                const rowIndex = Number(target.dataset.row);
+                const colIndex = Number(target.dataset.col);
+                if (type === 'start') insertStart(colIndex, rowIndex);
+                else if (type === 'finish') insertFinish(colIndex, rowIndex);
+                else insertTile(type, colIndex, rowIndex);
+            }
+        });
+
+        // double click to draw
+        displayArea.addEventListener('mouseover', (event) => {
+            if (!event.buttons) return;
             const target = event.target;
             if (target.classList.contains('tile') && currentSelection === type) {
                 const rowIndex = Number(target.dataset.row);
