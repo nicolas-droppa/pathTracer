@@ -239,6 +239,9 @@ body {
     border: .0625rem solid var(--color-box-border);
     box-sizing: border-box;
     transition: background-color 0.2s, border-radius 0.2s;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
 }
 
 .tile:hover {

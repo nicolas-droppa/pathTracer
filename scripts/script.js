@@ -200,32 +200,74 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => setAlgorithmButton(btn));
     });
 
-    for (const [type, className] of Object.entries(tileMap)) {
-        //click to place
-        displayArea.addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.classList.contains('tile') && currentSelection === type) {
-                const rowIndex = Number(target.dataset.row);
-                const colIndex = Number(target.dataset.col);
-                if (type === 'start') insertStart(colIndex, rowIndex);
-                else if (type === 'finish') insertFinish(colIndex, rowIndex);
-                else insertTile(type, colIndex, rowIndex);
-            }
-        });
+    // Track mouse state
+    let isMouseDown = false;
+    let lastPaintedTile = null;
 
-        // double click to draw
-        displayArea.addEventListener('mouseover', (event) => {
-            if (!event.buttons) return;
-            const target = event.target;
-            if (target.classList.contains('tile') && currentSelection === type) {
-                const rowIndex = Number(target.dataset.row);
-                const colIndex = Number(target.dataset.col);
-                if (type === 'start') insertStart(colIndex, rowIndex);
-                else if (type === 'finish') insertFinish(colIndex, rowIndex);
-                else insertTile(type, colIndex, rowIndex);
-            }
-        });
-    }
+    // Prevent default drag behavior
+    displayArea.addEventListener('dragstart', (event) => {
+        event.preventDefault();
+    });
+
+    // Handle click placement
+    displayArea.addEventListener('click', (event) => {
+        event.preventDefault();
+        const target = event.target;
+        if (!target.classList.contains('tile') || !currentSelection) return;
+        
+        const rowIndex = Number(target.dataset.row);
+        const colIndex = Number(target.dataset.col);
+        
+        if (currentSelection === 'start') insertStart(colIndex, rowIndex);
+        else if (currentSelection === 'finish') insertFinish(colIndex, rowIndex);
+        else insertTile(currentSelection, colIndex, rowIndex);
+    });
+
+    displayArea.addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        if (event.button !== 0) return; // only handle left click
+        const target = event.target;
+        if (!target.classList.contains('tile') || !currentSelection) return;
+        
+        isMouseDown = true;
+        lastPaintedTile = target;
+
+        const rowIndex = Number(target.dataset.row);
+        const colIndex = Number(target.dataset.col);
+        
+        if (currentSelection === 'start') insertStart(colIndex, rowIndex);
+        else if (currentSelection === 'finish') insertFinish(colIndex, rowIndex);
+        else insertTile(currentSelection, colIndex, rowIndex);
+    });
+
+    // Handle continuous painting
+    displayArea.addEventListener('mousemove', (event) => {
+        event.preventDefault();
+        if (!isMouseDown || !currentSelection) return;
+        const target = event.target;
+        if (!target.classList.contains('tile')) return;
+        
+        if (target === lastPaintedTile) return;
+        lastPaintedTile = target;
+
+        const rowIndex = Number(target.dataset.row);
+        const colIndex = Number(target.dataset.col);
+
+        if (currentSelection === 'start' || currentSelection === 'finish') return;
+        insertTile(currentSelection, colIndex, rowIndex);
+    });
+
+    document.addEventListener('mouseup', (event) => {
+        event.preventDefault();
+        isMouseDown = false;
+        lastPaintedTile = null;
+    });
+
+    document.addEventListener('mouseleave', (event) => {
+        event.preventDefault();
+        isMouseDown = false;
+        lastPaintedTile = null;
+    });
 
     // let debugButton = document.getElementById('debug');
     // debugButton.addEventListener('click', () => {
