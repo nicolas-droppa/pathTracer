@@ -1,10 +1,13 @@
 import { disableButtons, enableButtons, getRandomNumber, sleep } from "./utilities.js";
 import { startTimer, stopTimer, resetTimer } from "./timer.js";
 import { setSpeedMultiplier, getSpeedMultiplier } from "./speedMultiplier.js";
-import { BFS } from "./algorithms/bfs.js";
+import { BFS, resetBFS } from "./algorithms/bfs.js";
 import { setInfoMessage } from "./infoMessage.js";
 
 let displayArea = null;
+
+let _simulationPaused = false;
+let _simulationResetting = false;
 
 let pointsOfInterest = {
     start: {
@@ -214,13 +217,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let startSimulationButton = document.getElementById('startSimulationButton');
     startSimulationButton.addEventListener('click', async () => {
-        console.log('Starting simulation...');
+        // console.log('Starting simulation...');
+        _simulationPaused = false;
         setInfoMessage('Simulation started');
         disableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons]);
         startSimulationButton.classList.add('hidden');
         pauseSimulationButton.classList.remove('hidden');
         startTimer();
         while (true) {
+            if (_simulationPaused) break;
+            if (_simulationResetting) {
+                resetBFS();
+                break;
+            }
             if (BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles)) break;
             await sleep(50);
         }
@@ -228,24 +237,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let pauseSimulationButton = document.getElementById('pauseSimulationButton');
     pauseSimulationButton.addEventListener('click', () => {
-        console.log('Pausing simulation...');
+        stopTimer();
+        _simulationPaused = true;
+        // console.log('Pausing simulation...');
         setInfoMessage('Simulation paused');
         pauseSimulationButton.classList.add('hidden');
         startSimulationButton.classList.remove('hidden');
-        stopTimer();
     });
 
     let resetSimulationButton = document.getElementById('resetSimulationButton');
     resetSimulationButton.addEventListener('click', async () => {
-        console.log('Resseting simulation...');
+        stopTimer();
+        _simulationResetting = true;
+        // console.log('Resseting simulation...');
         setInfoMessage('Simulation reset');
-        await sleep(500);
+        await resetBFS();
+        await sleep(200);
         setInfoMessage('Simulation not started');
-        enableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons]);
+        enableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons, startSimulationButton]);
         pauseSimulationButton.classList.add('hidden');
         startSimulationButton.classList.remove('hidden');
-        stopTimer();
         resetTimer();
+        _simulationResetting = false;
     });
 
     const speedButtons = Array.from(document.querySelectorAll('.speed-button'));

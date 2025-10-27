@@ -1,4 +1,3 @@
-import { getSpeedMultiplier } from "../speedMultiplier.js";
 import { stopTimer } from "../timer.js";
 import { setInfoMessage } from "../infoMessage.js";
 import { disableButtons, sleep } from "../utilities.js";
@@ -126,4 +125,19 @@ export function BFS(startNode, endNode, groundTiles) {
     } else {
         return false;
     }
+}
+
+export async function resetBFS() {
+    visited.clear();
+    isRunning = false;
+    queue = [];
+    lookUpCounter = 0;
+    groundTilesSet.clear();
+    cameFrom.clear();
+
+    await sleep(500);
+    let tiles = document.querySelectorAll('.tile.visited-tile');
+    tiles.forEach(tile => tile.classList.remove('visited-tile'));
+    tiles = document.querySelectorAll('.tile.path-tile');;
+    tiles.forEach(tile => tile.classList.remove('path-tile'));
 }
