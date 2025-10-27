@@ -41,9 +41,9 @@
                     <div class="image"><i class="fa-solid fa-pause"></i></div>
                     <div class="label">PAUSE</div>
                 </button>
-                <button id="stopSimulationButton">
+                <button id="resetSimulationButton">
                     <div class="image"><i class="fa-solid fa-stop"></i></div>
-                    <div class="label">STOP</div>
+                    <div class="label">RESET</div>
                 </button>
                 <div class="time-area">
                     <div class="label">Time</div>
@@ -60,6 +60,10 @@
                             <button class="speed-button" data-speed="5"></button>
                         </div>
                     </div>
+                </div>
+                <div class="info-area">
+                    <div class="label">Current state</div>
+                    <div class="message" id="message">Simulation not started</div>    
                 </div>
             </div>
         </div>
@@ -82,10 +86,10 @@
                     <div class="label">Finish</div>
                     <div class="image"></div>
                 </button>
-                <button id="debug">
+                <!-- <button id="debug">
                     <div class="label">DEBUG</div>
                     <div class="image"></div>
-                </button>
+                </button> -->
             </div>
 
             <div class="display-area" id="displayArea"></div>

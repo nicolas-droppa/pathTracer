@@ -1,4 +1,7 @@
 import { getSpeedMultiplier } from "../speedMultiplier.js";
+import { stopTimer } from "../timer.js";
+import { setInfoMessage } from "../infoMessage.js";
+import { disableButtons, sleep } from "../utilities.js";
 
 let visited = new Set();
 let isRunning = false;
@@ -31,6 +34,11 @@ function initializeBFS(startNode, groundTilesArray, endNode) {
 }
 
 async function constructPath(cameFromMap, startNode, endNode) {
+    setInfoMessage('Path found!');
+    disableButtons([
+        document.getElementById('startSimulationButton'),
+        document.getElementById('pauseSimulationButton')
+    ]);
     const startId = idOf(startNode);
     const endId = idOf(endNode);
 
@@ -52,10 +60,7 @@ async function constructPath(cameFromMap, startNode, endNode) {
         const tile = document.querySelector(`.tile[data-row="${col}"][data-col="${row}"]`);
         if (tile) tile.classList.add("path-tile");
         
-        const delayBase = 100;
-        const multiplier = getSpeedMultiplier();
-        const delay = Math.max(0, Math.floor(delayBase / (multiplier || 1)));
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await sleep(100);
     }
 
     return path;
@@ -84,6 +89,7 @@ export function BFS(startNode, endNode, groundTiles) {
     // console.log(`Current position: X=${currentPositionX}, Y=${currentPositionY} | endNode: X=${endNode[0]}, Y=${endNode[1]}`);
 
     if (currentPositionX == endNode[0] && currentPositionY == endNode[1]) {
+        stopTimer();
         console.log("Reached the end node!");
         isRunning = false;
         constructPath(cameFrom, startNode, endNode);
@@ -113,7 +119,8 @@ export function BFS(startNode, endNode, groundTiles) {
     console.log(`Queue length: ${queue.length}`);
 
     if (queue.length === 0) {
-        console.log("BFS complete.");
+        setInfoMessage('No path found!');
+        // console.log("BFS complete.");
         isRunning = false;
         return true;
     } else {

@@ -11,6 +11,7 @@
     --text-color-unimportant: #c0c0c0;
 
     --color-active: #2e2e2e;
+    --color-state: #444444;
 
     --background-color: #f5f5f5;
     --background-color-complement: #fcfcfc;
@@ -64,6 +65,18 @@
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: var(--text-color);
+}
+
+.disabled-button {
+    pointer-events: none;
+    opacity: 0.5;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.asset-selection-area .disabled-button {
+    pointer-events: none;
+    opacity: 0.5;
+    box-shadow: none;
 }
 
 .active-text-color {
@@ -175,8 +188,8 @@ body {
 #startSimulationButton:hover { background: var(--start-sim-button-color-hover); }
 #pauseSimulationButton { background: var(--pause-sim-button-color); }
 #pauseSimulationButton:hover { background: var(--pause-sim-button-color-hover); }
-#stopSimulationButton { background: var(--stop-sim-button-color); }
-#stopSimulationButton:hover { background: var(--stop-sim-button-color-hover); }
+#resetSimulationButton { background: var(--stop-sim-button-color); }
+#resetSimulationButton:hover { background: var(--stop-sim-button-color-hover); }
 
 .time-area {
     margin-left: 2rem;
@@ -185,6 +198,20 @@ body {
 .time-area .label {
     font-size: var(--font-size-s);
     color: var(--text-color-unimportant);
+}
+
+.info-area {
+    margin-left: 2rem;
+}
+
+.info-area .label {
+    font-size: var(--font-size-s);
+    color: var(--text-color-unimportant);
+}
+
+.info-area .message {
+    font-size: var(--font-size-m);
+    color: var(--color-state);
 }
 
 .asset-selection-area {
@@ -207,8 +234,8 @@ body {
 */
 
 .tile {
-    width: 3rem;
-    height: 3rem;
+    width: 2.25rem;
+    height: 2.25rem;
     border: .0625rem solid var(--color-box-border);
     box-sizing: border-box;
     transition: background-color 0.2s, border-radius 0.2s;
