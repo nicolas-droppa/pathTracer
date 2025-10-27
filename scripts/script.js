@@ -8,6 +8,7 @@ let displayArea = null;
 
 let _simulationPaused = false;
 let _simulationResetting = false;
+let _simulationRunning = false;
 
 let pointsOfInterest = {
     start: {
@@ -71,6 +72,8 @@ function insertFinish(positionX = null, positionY = null) {
 
 function insertTile(kind, positionX = null, positionY = null, isSingle = true) {
     if (!displayArea) return;
+
+    if (_simulationRunning) return;
 
     const numRows = displayArea.children.length;
 
@@ -142,7 +145,7 @@ function insertTile(kind, positionX = null, positionY = null, isSingle = true) {
         }
     }
 
-    console.log(`${kind} placed at`, { x: colIndex, y: rowIndex });
+    // console.log(`${kind} placed at`, { x: colIndex, y: rowIndex });
     return { x: colIndex, y: rowIndex };
 }
 
@@ -151,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGrid(20, 20);
     insertStart();
     insertFinish();
-    console.log(pointsOfInterest);
+    // console.log(pointsOfInterest);
 
     for (const [id, type] of Object.entries(buttonMap)) {
         const button = document.getElementById(id);
@@ -161,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentSelection = null;
                 button.classList.remove("active-bg-color");
                 button.firstElementChild.classList.remove("active-text-color");
-                console.log(`Deselected ${type} tile`);
+                // console.log(`Deselected ${type} tile`);
             } else {
                 Object.keys(buttonMap).forEach(key => {
                     const btn = document.getElementById(key);
@@ -172,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentSelection = type;
                 button.classList.add("active-bg-color");
                 button.firstElementChild.classList.add("active-text-color");
-                console.log(`Selected ${type} tile for placement`);
+                // console.log(`Selected ${type} tile for placement`);
             }
         });
     }
@@ -187,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         btn.classList.add("algorithm-active-button");
         currentAlgorithm = btn.dataset.algo || btn.id || btn.textContent.trim();
-        console.log('Algorithm selected:', currentAlgorithm);
+        // console.log('Algorithm selected:', currentAlgorithm);
     }
 
     const defaultAlgoBtn = document.querySelector('.algorithm-selection-area button[data-algo="bfs"]') || algorithmButtons[0];
@@ -219,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startSimulationButton.addEventListener('click', async () => {
         // console.log('Starting simulation...');
         _simulationPaused = false;
+        _simulationRunning = true;
         setInfoMessage('Simulation started');
         disableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons]);
         startSimulationButton.classList.add('hidden');
@@ -226,11 +230,17 @@ document.addEventListener('DOMContentLoaded', () => {
         startTimer();
         while (true) {
             if (_simulationPaused) break;
+
             if (_simulationResetting) {
                 resetBFS();
                 break;
             }
-            if (BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles)) break;
+
+            if (BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles)){ 
+                _simulationRunning = false;
+                break;
+            }
+
             await sleep(50);
         }
     });
@@ -249,12 +259,13 @@ document.addEventListener('DOMContentLoaded', () => {
     resetSimulationButton.addEventListener('click', async () => {
         stopTimer();
         _simulationResetting = true;
+        _simulationRunning = false;
         // console.log('Resseting simulation...');
         setInfoMessage('Simulation reset');
         await resetBFS();
         await sleep(200);
         setInfoMessage('Simulation not started');
-        enableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons, startSimulationButton]);
+        enableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons, startSimulationButton, pauseSimulationButton]);
         pauseSimulationButton.classList.add('hidden');
         startSimulationButton.classList.remove('hidden');
         resetTimer();
@@ -278,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const v = Number(btn.dataset.speed) || 1;
             setSpeedMultiplier(v);
             updateSpeedButtonsUI(v);
-            console.log('Speed set to', v);
+            // console.log('Speed set to', v);
         });
     });
 });

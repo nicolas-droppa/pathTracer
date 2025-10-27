@@ -13,8 +13,7 @@ export function getRandomNumber(from, to) {
 
 export async function sleep(ms) {
     const multiplier = getSpeedMultiplier() || 1;
-    console.log(`Sleeping for ${ms} ms with multiplier ${multiplier}`);
-    const delay = Math.max(0, Math.floor(ms / (multiplier || 1)));
+    const delay = Math.max(0, Math.floor(ms / (multiplier)));
     return new Promise(resolve => setTimeout(resolve, delay));
 }
 

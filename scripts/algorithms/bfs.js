@@ -5,7 +5,7 @@ import { disableButtons, sleep } from "../utilities.js";
 let visited = new Set();
 let isRunning = false;
 let queue = [];
-let lookUpCounter = 0;
+// let lookUpCounter = 0;
 let groundTilesSet = new Set();
 let cameFrom = new Map();
 
@@ -52,7 +52,7 @@ async function constructPath(cameFromMap, startNode, endNode) {
     path.push(startId);
     path.reverse();
 
-    console.log("Shortest path:", path);
+    // console.log("Shortest path:", path);
 
     for (const id of path) {
         const [row, col] = id.split(",");
@@ -66,7 +66,7 @@ async function constructPath(cameFromMap, startNode, endNode) {
 }
 
 export function BFS(startNode, endNode, groundTiles) {
-    console.log(`Lookup iteration: ${lookUpCounter++}`);
+    // console.log(`Lookup iteration: ${lookUpCounter++}`);
 
     if (!isRunning) {
         isRunning = true;
@@ -89,7 +89,7 @@ export function BFS(startNode, endNode, groundTiles) {
 
     if (currentPositionX == endNode[0] && currentPositionY == endNode[1]) {
         stopTimer();
-        console.log("Reached the end node!");
+        // console.log("Reached the end node!");
         isRunning = false;
         constructPath(cameFrom, startNode, endNode);
         return true;
@@ -115,11 +115,16 @@ export function BFS(startNode, endNode, groundTiles) {
     
     queue.shift();
 
-    console.log(`Queue length: ${queue.length}`);
+    // console.log(`Queue length: ${queue.length}`);
 
     if (queue.length === 0) {
         setInfoMessage('No path found!');
         // console.log("BFS complete.");
+        stopTimer();
+        disableButtons([
+            document.getElementById('startSimulationButton'),
+            document.getElementById('pauseSimulationButton')
+        ]);
         isRunning = false;
         return true;
     } else {
@@ -131,7 +136,7 @@ export async function resetBFS() {
     visited.clear();
     isRunning = false;
     queue = [];
-    lookUpCounter = 0;
+    // lookUpCounter = 0;
     groundTilesSet.clear();
     cameFrom.clear();
 
