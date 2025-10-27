@@ -1,3 +1,5 @@
+import { getSpeedMultiplier } from "../speedMultiplier.js";
+
 let visited = new Set();
 let isRunning = false;
 let queue = [];
@@ -49,7 +51,11 @@ async function constructPath(cameFromMap, startNode, endNode) {
         const [row, col] = id.split(",");
         const tile = document.querySelector(`.tile[data-row="${col}"][data-col="${row}"]`);
         if (tile) tile.classList.add("path-tile");
-        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        const delayBase = 100;
+        const multiplier = getSpeedMultiplier();
+        const delay = Math.max(0, Math.floor(delayBase / (multiplier || 1)));
+        await new Promise(resolve => setTimeout(resolve, delay));
     }
 
     return path;

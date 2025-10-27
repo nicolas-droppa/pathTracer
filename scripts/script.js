@@ -219,7 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
         startTimer();
         while (true) {
             if (BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles)) break;
-            await new Promise(resolve => setTimeout(resolve, 50));
+            const baseDelay = 50;
+            const multiplier = getSpeedMultiplier();
+            const delay = Math.max(0, Math.floor(baseDelay / (multiplier || 1)));
+            await new Promise(resolve => setTimeout(resolve, delay));
         }
     });
 
