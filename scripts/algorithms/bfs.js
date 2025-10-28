@@ -57,8 +57,9 @@ async function constructPath(cameFromMap, startNode, endNode) {
     for (const id of path) {
         const [row, col] = id.split(",");
         const tile = document.querySelector(`.tile[data-row="${col}"][data-col="${row}"]`);
-        if (tile) tile.classList.add("path-tile");
-        
+
+        if (tile && id !== startId && id !== endId) tile.classList.add("path-tile");
+
         await sleep(100);
     }
 
@@ -80,7 +81,10 @@ export function BFS(startNode, endNode, groundTiles) {
 
     const [row, col] = currentId.split(",");
     const tile = document.querySelector(`.tile[data-row="${col}"][data-col="${row}"]`);
-    if (tile) tile.classList.add('visited-tile');
+
+    const startId = idOf(startNode);
+    const endId = idOf(endNode);
+    if (tile && currentId !== startId && currentId !== endId) tile.classList.add('visited-tile');
 
     let currentPositionX = current[0];
     let currentPositionY = current[1];
