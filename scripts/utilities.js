@@ -50,3 +50,89 @@ export function enableButtons(buttons) {
         enableButton(buttons);
     }
 }
+
+function square(container) {
+    container.innerHTML = "";
+
+    for (let i = 0; i < 5; i++) {
+        const row = document.createElement('div');
+        row.style.display = "flex";
+
+        for (let j = 0; j < 5; j++) {
+            const square = document.createElement('div');
+            square.classList.add('button-image-square');
+            square.style.width = '.8rem';
+            square.style.height = '.8rem';
+            row.appendChild(square);
+        }
+
+        container.appendChild(row);
+    }
+}
+
+function circle(container) {
+    container.innerHTML = "";
+
+    for (let i = 0; i < 5; i++) {
+        const row = document.createElement('div');
+        row.style.display = "flex";
+
+        for (let j = 0; j < 5; j++) {
+            const square = document.createElement('div');
+            square.classList.add('button-image-square');
+            square.style.width = '.8rem';
+            square.style.height = '.8rem';
+
+            const center = (5 - 1) / 2;
+            const distance = Math.sqrt((i - center) ** 2 + (j - center) ** 2);
+
+            const radius = center + 0.3;
+            if (distance > radius) {
+                square.style.visibility = 'hidden';
+            }
+
+            row.appendChild(square);
+        }
+
+        container.appendChild(row);
+    }
+}
+
+function triangle(container) {
+    container.innerHTML = "";
+
+    for (let i = 0; i < 5; i++) {
+        const row = document.createElement('div');
+        row.style.display = "flex";
+
+        for (let j = 0; j < 5; j++) {
+            const square = document.createElement('div');
+            square.classList.add('button-image-square');
+            square.style.width = '.8rem';
+            square.style.height = '.8rem';
+
+            if (j < 5 - i - 1) {
+                square.style.visibility = 'hidden';
+            }
+
+            row.appendChild(square);
+        }
+
+        container.appendChild(row);
+    }
+}
+
+
+export function createButtonImageFromSquares(container, shape) {
+    switch (shape) {
+        case "circle":
+            circle(container);
+            break;
+        case "triangle":
+            triangle(container);
+            break;
+        default:
+            square(container);
+            break;
+    }
+}

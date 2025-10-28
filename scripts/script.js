@@ -1,4 +1,4 @@
-import { disableButtons, enableButtons, getRandomNumber, sleep } from "./utilities.js";
+import { createButtonImageFromSquares, disableButtons, enableButtons, getRandomNumber, sleep } from "./utilities.js";
 import { startTimer, stopTimer, resetTimer } from "./timer.js";
 import { setSpeedMultiplier, getSpeedMultiplier } from "./speedMultiplier.js";
 import { BFS, resetBFS } from "./algorithms/bfs.js";
@@ -151,6 +151,9 @@ function insertTile(kind, positionX = null, positionY = null, isSingle = true) {
 
 document.addEventListener('DOMContentLoaded', () => {
     displayArea = document.getElementById('displayArea');
+    createButtonImageFromSquares(document.getElementById('squareButtonImage'), 'square');
+    createButtonImageFromSquares(document.getElementById('triangleButtonImage'), 'triangle');
+    createButtonImageFromSquares(document.getElementById('circleButtonImage'), 'circle');
     renderGrid(20, 20);
     insertStart();
     insertFinish();

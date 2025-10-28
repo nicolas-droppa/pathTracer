@@ -102,15 +102,61 @@ body {
 
 .horizontal-area {
     display: flex;
-    gap: 1rem;
     margin-bottom: 1rem;
 }
 
 .shape-selection-area {
     display: flex;
+    align-items: center;
     gap: 1rem;
-    height: 5rem;
-    background-color: rgba(255, 0, 0, 0.068);
+    height: 8rem;
+    padding: 1rem;
+    border-top: .0625rem solid var(--color-border);
+    border-bottom: .0625rem solid var(--color-border);
+}
+
+.shape-selection-area button {
+    font-size: var(--font-size-s);
+    color: var(--text-color-unimportant);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+    width: 6.5rem;
+    height: 6.5rem;
+    border: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    background: none;
+    transition: background 0.1s;
+}
+
+.shape-selection-area button:hover {
+    background: var(--background-color-complement-hover)!important;
+}
+
+.shape-selection-area button .label {
+    position: absolute;
+    top: .25rem;
+    left: .25rem;
+}
+
+.shape-selection-area button .image {
+    width: 4rem;
+    height: 4rem;
+    box-sizing: border-box;
+    margin-top: .5rem;
+    background-color: var(--color-background-color-complement);
+}
+
+#circleButtonImage > :nth-child(3) > :nth-child(3) {
+    background-color: var(--color-background-color-complement);
+}
+
+.button-image-square {
+    border: 1px solid var(--background-color);
+    background-color: var(--color-ground);
 }
 
 .algorithm-selection-area {
