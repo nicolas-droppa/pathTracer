@@ -203,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => setAlgorithmButton(btn));
     });
 
-    // Track mouse state
     let isMouseDown = false;
     let lastPaintedTile = null;
 
@@ -283,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
         _simulationPaused = false;
         _simulationRunning = true;
         setInfoMessage('Simulation started');
-        disableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons]);
+        disableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons, squareButton, triangleButton, circleButton]);
         startSimulationButton.classList.add('hidden');
         pauseSimulationButton.classList.remove('hidden');
         startTimer();
@@ -324,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await resetBFS();
         await sleep(200);
         setInfoMessage('Simulation not started');
-        enableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons, startSimulationButton, pauseSimulationButton]);
+        enableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons, startSimulationButton, pauseSimulationButton, squareButton, triangleButton, circleButton]);
         pauseSimulationButton.classList.add('hidden');
         startSimulationButton.classList.remove('hidden');
         resetTimer();
@@ -349,6 +348,127 @@ document.addEventListener('DOMContentLoaded', () => {
             setSpeedMultiplier(v);
             updateSpeedButtonsUI(v);
             // console.log('Speed set to', v);
+        });
+    });
+
+    const shapeButtons = Array.from(document.querySelectorAll('.shape-button'));
+
+    function clearSimulationState() {
+        if (displayArea) {
+            const tiles = displayArea.querySelectorAll('.tile-visited, .tile-path');
+            tiles.forEach(t => {
+                t.classList.remove('tile-visited');
+                t.classList.remove('tile-path');
+            });
+        }
+
+        pointsOfInterest.goundTiles = [];
+        pointsOfInterest.wallTiles = [];
+        pointsOfInterest.start = { x: null, y: null };
+        pointsOfInterest.finish = { x: null, y: null };
+
+        stopTimer();
+        resetTimer();
+
+        const pauseBtn = document.getElementById('pauseSimulationButton');
+        const startBtn = document.getElementById('startSimulationButton');
+        if (pauseBtn) pauseBtn.classList.add('hidden');
+        if (startBtn) startBtn.classList.remove('hidden');
+
+        const msg = document.getElementById('message');
+        if (msg) msg.textContent = 'Simulation not started';
+    }
+
+    function renderShapeGrid(shape, rows = 20, columns = 20) {
+        if (!displayArea) return;
+        displayArea.innerHTML = "";
+        pointsOfInterest.goundTiles = [];
+        pointsOfInterest.wallTiles = [];
+        pointsOfInterest.start = { x: null, y: null };
+        pointsOfInterest.finish = { x: null, y: null };
+
+        const centerRow = (rows - 1) / 2;
+        const centerCol = (columns - 1) / 2;
+        const outerRadius = Math.min(rows, columns) / 2.5;
+        const innerRadius = outerRadius / 2.5;
+
+        for (let i = 0; i < rows; i++) {
+            const row = document.createElement('div');
+            row.classList.add('tile-row');
+            row.style.display = "flex";
+
+            for (let j = 0; j < columns; j++) {
+                const tile = document.createElement('div');
+                tile.classList.add('tile', 'tile-ground');
+                tile.dataset.row = i;
+                tile.dataset.col = j;
+
+                let visible = true;
+
+                switch (shape) {
+                    case "circle":
+                        const dist = Math.sqrt((i - centerRow) ** 2 + (j - centerCol) ** 2);
+                        if (dist > outerRadius || dist < innerRadius) visible = false;
+                        break;
+
+                        case "triangle":
+                        if (j < columns - 1 - i) visible = false;
+                        break;
+
+                    default:
+                        visible = true;
+                        break;
+                }
+
+                if (!visible) {
+                    tile.classList.add('tile-hidden');
+                    tile.style.visibility = "hidden";
+                } else
+                    pointsOfInterest.goundTiles.push({ x: j, y: i });
+
+                row.appendChild(tile);
+            }
+
+            displayArea.appendChild(row);
+        }
+
+        if (pointsOfInterest.goundTiles.length >= 2) {
+            const total = pointsOfInterest.goundTiles.length;
+
+            // choose two distinct random indices among visible ground tiles
+            const pickTwoDistinct = (n) => {
+                const a = Math.floor(Math.random() * n);
+                let b = Math.floor(Math.random() * n);
+                if (n > 1) {
+                    while (b === a) b = Math.floor(Math.random() * n);
+                }
+                return [a, b];
+            };
+
+            const [startIndex, finishIndex] = pickTwoDistinct(total);
+            const startTile = pointsOfInterest.goundTiles[startIndex];
+            const finishTile = pointsOfInterest.goundTiles[finishIndex];
+
+            insertStart(startTile.x, startTile.y);
+            insertFinish(finishTile.x, finishTile.y);
+        }
+    }
+
+    shapeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            shapeButtons.forEach(b => {
+                b.classList.remove("active-bg-color");
+                b.firstElementChild.classList.remove("active-text-color");
+            });
+            btn.classList.add("active-bg-color");
+            btn.firstElementChild.classList.add("active-text-color");
+
+            const shape = btn.id.replace('Button', '').toLowerCase();
+            // console.log('Shape selected:', shape);
+
+            clearSimulationState();
+
+            renderShapeGrid(shape);
         });
     });
 });

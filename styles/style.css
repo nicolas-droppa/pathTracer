@@ -73,9 +73,8 @@ body {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.asset-selection-area .disabled-button {
-    pointer-events: none;
-    opacity: 0.5;
+.asset-selection-area .disabled-button,
+.shape-selection-area .disabled-button {
     box-shadow: none;
 }
 
