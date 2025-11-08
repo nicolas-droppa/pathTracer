@@ -9,6 +9,7 @@ let groundTilesSet = new Set();
 let cameFrom = new Map();
 let gScore = new Map();
 let fScore = new Map();
+let cancelled = false;
 
 function idOf(coordOrObj) {
     if (Array.isArray(coordOrObj)) return `${coordOrObj[0]},${coordOrObj[1]}`;
@@ -31,6 +32,7 @@ function groundTilesToSet(groundTilesArray, endNode) {
 }
 
 function initializeAStar(startNode, groundTilesArray, endNode) {
+    cancelled = false;
     openSet.clear();
     cameFrom.clear();
     gScore.clear();
@@ -64,6 +66,7 @@ async function constructPath(cameFromMap, startNode, endNode) {
     path.reverse();
 
     for (const id of path) {
+        if (cancelled) break;
         const [row, col] = id.split(",");
         const tile = document.querySelector(`.tile[data-row="${col}"][data-col="${row}"]`);
         if (tile && id !== startId && id !== endId) tile.classList.add("path-tile");
@@ -149,6 +152,7 @@ export async function AStar(startNode, endNode, groundTiles) {
 export async function resetAStar() {
     visited.clear();
     isRunning = false;
+    cancelled = true;
     openSet.clear();
     groundTilesSet.clear();
     cameFrom.clear();

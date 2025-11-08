@@ -5,6 +5,7 @@ import { disableButtons, sleep } from "../utilities.js";
 let visited = new Set();
 let isRunning = false;
 let queue = [];
+let cancelled = false;
 // let lookUpCounter = 0;
 let groundTilesSet = new Set();
 let cameFrom = new Map();
@@ -27,6 +28,7 @@ function groundTilesToSet(groundTilesArray, endNode) {
 }
 
 function initializeBFS(startNode, groundTilesArray, endNode) {
+    cancelled = false;
     queue.push(startNode);
     groundTilesToSet(groundTilesArray, endNode);
     // console.log(`Start node: ${JSON.stringify(startNode)}`);
@@ -55,6 +57,8 @@ async function constructPath(cameFromMap, startNode, endNode) {
     // console.log("Shortest path:", path);
 
     for (const id of path) {
+        // stop rendering path if algorithm was cancelled (reset pressed)
+        if (cancelled) break;
         const [row, col] = id.split(",");
         const tile = document.querySelector(`.tile[data-row="${col}"][data-col="${row}"]`);
 
@@ -139,6 +143,7 @@ export function BFS(startNode, endNode, groundTiles) {
 export async function resetBFS() {
     visited.clear();
     isRunning = false;
+    cancelled = true;
     queue = [];
     // lookUpCounter = 0;
     groundTilesSet.clear();

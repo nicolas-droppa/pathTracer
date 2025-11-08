@@ -385,10 +385,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function clearSimulationState() {
         if (displayArea) {
-            const tiles = displayArea.querySelectorAll('.tile-visited, .tile-path');
+            // remove algorithm-related classes applied by BFS/DFS/A*
+            const tiles = displayArea.querySelectorAll('.tile.visited-tile, .tile.path-tile');
             tiles.forEach(t => {
-                t.classList.remove('tile-visited');
-                t.classList.remove('tile-path');
+                t.classList.remove('visited-tile');
+                t.classList.remove('path-tile');
             });
         }
 
@@ -403,6 +404,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const pauseBtn = document.getElementById('pauseSimulationButton');
         const startBtn = document.getElementById('startSimulationButton');
         if (pauseBtn) pauseBtn.classList.add('hidden');
+            // clear UI state first so repeated runs start identically
+            clearSimulationState();
         if (startBtn) startBtn.classList.remove('hidden');
 
         const msg = document.getElementById('message');
