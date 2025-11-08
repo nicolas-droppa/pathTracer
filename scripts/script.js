@@ -2,6 +2,8 @@ import { createButtonImageFromSquares, disableButtons, enableButtons, getRandomN
 import { startTimer, stopTimer, resetTimer } from "./timer.js";
 import { setSpeedMultiplier, getSpeedMultiplier } from "./speedMultiplier.js";
 import { BFS, resetBFS } from "./algorithms/bfs.js";
+import { DFS, resetDFS } from "./algorithms/dfs.js";
+import { AStar, resetAStar } from "./algorithms/astar.js";
 import { setInfoMessage } from "./infoMessage.js";
 
 let displayArea = null;
@@ -286,20 +288,47 @@ document.addEventListener('DOMContentLoaded', () => {
         startSimulationButton.classList.add('hidden');
         pauseSimulationButton.classList.remove('hidden');
         startTimer();
-        while (true) {
-            if (_simulationPaused) break;
 
-            if (_simulationResetting) {
-                resetBFS();
-                break;
+        // Run selected algorithm
+        if (currentAlgorithm === 'bfs') {
+            while (true) {
+                if (_simulationPaused) break;
+
+                if (_simulationResetting) {
+                    await resetBFS();
+                    break;
+                }
+
+                if (BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles)){
+                    _simulationRunning = false;
+                    break;
+                }
+
+                await sleep(50);
             }
+        } else if (currentAlgorithm === 'dfs') {
+            await DFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles);
+            _simulationRunning = false;
+        } else if (currentAlgorithm === 'astar' || currentAlgorithm === 'a*' || currentAlgorithm === 'a-star') {
+            await AStar(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles);
+            _simulationRunning = false;
+        } else {
+            // fallback to bfs
+            while (true) {
+                if (_simulationPaused) break;
 
-            if (BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles)){ 
-                _simulationRunning = false;
-                break;
+                if (_simulationResetting) {
+                    await resetBFS();
+                    break;
+                }
+
+                if (BFS(Object.values(pointsOfInterest.start), Object.values(pointsOfInterest.finish), pointsOfInterest.goundTiles)){
+                    _simulationRunning = false;
+                    break;
+                }
+
+                await sleep(50);
             }
-
-            await sleep(50);
         }
     });
 
@@ -320,7 +349,8 @@ document.addEventListener('DOMContentLoaded', () => {
         _simulationRunning = false;
         // console.log('Resseting simulation...');
         setInfoMessage('Simulation reset');
-        await resetBFS();
+        // reset all algorithm states to be safe
+        await Promise.all([resetBFS(), resetDFS(), resetAStar()]);
         await sleep(200);
         setInfoMessage('Simulation not started');
         enableButtons([selectGroundButton, selectWallButton, selectStartButton, selectFinishButton, ...algorithmButtons, startSimulationButton, pauseSimulationButton, squareButton, triangleButton, circleButton]);
