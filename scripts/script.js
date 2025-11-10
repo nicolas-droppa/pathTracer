@@ -273,10 +273,10 @@ document.addEventListener('DOMContentLoaded', () => {
         lastPaintedTile = null;
     });
 
-    // let debugButton = document.getElementById('debug');
-    // debugButton.addEventListener('click', () => {
-    //     console.log('Points of Interest:', pointsOfInterest);
-    // });
+    let debugButton = document.getElementById('debug');
+    debugButton.addEventListener('click', () => {
+        console.log('Points of Interest:', pointsOfInterest);
+    });
 
     let startSimulationButton = document.getElementById('startSimulationButton');
     startSimulationButton.addEventListener('click', async () => {
