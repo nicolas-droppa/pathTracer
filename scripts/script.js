@@ -404,8 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const pauseBtn = document.getElementById('pauseSimulationButton');
         const startBtn = document.getElementById('startSimulationButton');
         if (pauseBtn) pauseBtn.classList.add('hidden');
-            // clear UI state first so repeated runs start identically
-            clearSimulationState();
         if (startBtn) startBtn.classList.remove('hidden');
 
         const msg = document.getElementById('message');
