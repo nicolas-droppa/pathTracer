@@ -91,10 +91,13 @@ main {
 
 .active-text-color {
     color: var(--color-active);
+    /* font-weight: bold; */
 }
 
 .active-bg-color {
-    background: var(--background-color-complement)!important;
+    /* background: rgb(248, 248, 248)!important;     */
+    border-radius: .2rem;
+    outline: 1px dashed var(--color-active)
 }
 
 .selected {
