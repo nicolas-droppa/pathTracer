@@ -428,3 +428,212 @@ body {
     background: var(--speed-button-color-active);
     color: var(--text-color-white);
 }
+
+/* layout: make center display area flexible and add right menu */
+.display-area {
+    flex: 1;
+}
+
+.right-menu {
+    width: 12rem;
+    padding: 1rem;
+    border-left: .0625rem solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: stretch;
+}
+.right-menu-button {
+    font-size: var(--font-size-s);
+    padding: .5rem;
+    border: none;
+    border-radius: .25rem;
+    background: transparent;
+    cursor: pointer;
+    outline: .0625rem solid var(--algorithm-button-color);
+    transition: background 0.12s, outline 0.12s;
+}
+.right-menu-button:hover {
+    background: var(--background-color-complement-hover);
+    outline: .0625rem solid var(--algorithm-button-color-hover);
+}
+
+/* Modal overlay */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0,0,0,0.45);
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--background-color-complement);
+    color: var(--text-color);
+    padding: 3rem;
+    border-radius: .5rem;
+    width: min(60rem, 90%);
+    max-height: 80vh;
+    overflow: auto;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.modal-actions {
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.modal-cancel {
+    background: transparent;
+    border: .0625rem solid var(--color-border);
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+    cursor: pointer;
+    transition: bachground 0.1s;
+}
+
+.modal-cancel:hover {
+    background: var(--color-finish);
+}
+
+.modal-close:hover {
+    color: var(--color-finish);
+}
+
+.test-table {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    border: 0.0625rem solid var(--color-state);
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+/* Rows */
+.test-table .row {
+    display: flex;
+    flex-wrap: nowrap;
+    border-bottom: 0.0625rem solid var(--color-state);
+}
+
+.test-table .row:last-child {
+    border-bottom: none;
+}
+
+/* Cells */
+.test-table .cell {
+    padding: 0.2rem 0.5rem;
+    display: flex;
+    align-items: center;
+    border-left: 0.0625rem solid var(--color-state);
+}
+
+.test-table .cell:first-child {
+    border-left: none;
+}
+
+/* Column sizing */
+.test-table .cell.id,
+.test-table .cell.title,
+.test-table .cell.use-case,
+.test-table .cell.acceptance-level,
+.test-table .cell.interface,
+.test-table .cell.purpose,
+.test-table .cell.output,
+.test-table .cell.input,
+.test-table .cell.step {
+    min-width: 160px;
+}
+
+.cell.step-number {
+    flex: 0 0 3rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.cell.action,
+.cell.action-text {
+    flex: 0 0 25%;
+}
+
+.cell.expected,
+.cell.expected-text {
+    flex: 0 0 45%;
+}
+
+.cell.actual-text {
+    flex: 1 1 25%;
+    min-height: 40px;
+}
+
+.cell.step,
+.cell.step-number {
+    min-width: 4rem !important;
+    width: 4rem !important;
+}
+
+.test-table .row:nth-child(odd) {
+    background: var(--background-color-complement-hover);
+}
+
+@media (max-width: 900px) {
+    .test-table .row {
+        flex-direction: column;
+        border-left: 0.0625rem solid var(--color-state);
+        border-right: 0.0625rem solid var(--color-state);
+        border-bottom: 0.0625rem solid var(--color-state);
+    }
+
+    .test-table .cell {
+        position: relative;
+        padding: 0.4rem 0.5rem;
+        border-left: none;
+        border-bottom: 0.0625rem solid var(--color-state);
+    }
+
+    .test-table .row:nth-child(n+7) .cell {
+        padding-left: 6rem;
+    }
+
+    .test-table .cell:last-child {
+        border-bottom: none;
+    }
+
+    .test-table .cell::before {
+        position: absolute;
+        left: 0.5rem;
+        width: 5rem;
+        font-weight: bold;
+        color: #333;
+        content: attr(data-label);
+    }
+
+    .cell.step-number {
+        text-align: left;
+        width: auto !important;
+        background-color: var(--text-color-unimportant);
+    }
+
+    .cell.step, .cell.action, .cell.expected, .cell.actual {
+        display: none;
+    }
+}

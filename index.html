@@ -106,9 +106,29 @@
             </div>
 
             <div class="display-area" id="displayArea"></div>
+
+            <div class="right-menu" id="rightMenu">
+                <button class="right-menu-button" data-test="test1">A-Test 1</button>
+                <button class="right-menu-button" data-test="test2">A-Test 2</button>
+                <button class="right-menu-button" data-test="test3">A-Test 3</button>
+                <button class="right-menu-button" data-test="test3">A-Test 4</button>
+                <button class="right-menu-button" data-test="test3">A-Test 5</button>
+            </div>
         </div>
     </main>
 
+    <div id="modalOverlay" class="modal hidden" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+            <h2 id="modalTitle">Modal Title</h2>
+            <div id="modalBody" class="modal-body"></div>
+            <div class="modal-actions">
+                <button id="modalCancel" class="modal-cancel">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script src="scripts/script.js" type="module"></script>
+    <script src="scripts/modals.js" type="module"></script>
 </body>
 </html>
