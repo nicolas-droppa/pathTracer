@@ -44,37 +44,41 @@
             </div>
 
             <div class="control-panel">
-                <button id="startSimulationButton">
-                    <div class="image"><i class="fa-solid fa-play"></i></div>
-                    <div class="label">START</div>
-                </button>
-                <button id="pauseSimulationButton" class="hidden">
-                    <div class="image"><i class="fa-solid fa-pause"></i></div>
-                    <div class="label">PAUSE</div>
-                </button>
-                <button id="resetSimulationButton">
-                    <div class="image"><i class="fa-solid fa-stop"></i></div>
-                    <div class="label">RESET</div>
-                </button>
-                <div class="time-area">
-                    <div class="label">Time</div>
-                    <div class="time" id="timer">00:00.00</div>    
-                </div>
-                <div class="speed-area">
-                    <div class="speed-text">
-                        <div class="label">Speed</div>
-                        <div class="speed-buttons">
-                            <button class="speed-button" data-speed="1"></button>
-                            <button class="speed-button" data-speed="2"></button>
-                            <button class="speed-button" data-speed="3"></button>
-                            <button class="speed-button" data-speed="4"></button>
-                            <button class="speed-button" data-speed="5"></button>
-                        </div>
+                <div class="control-panel-row">
+                    <button id="startSimulationButton">
+                        <div class="image"><i class="fa-solid fa-play"></i></div>
+                        <div class="label">START</div>
+                    </button>
+                    <button id="pauseSimulationButton" class="hidden">
+                        <div class="image"><i class="fa-solid fa-pause"></i></div>
+                        <div class="label">PAUSE</div>
+                    </button>
+                    <button id="resetSimulationButton">
+                        <div class="image"><i class="fa-solid fa-stop"></i></div>
+                        <div class="label">RESET</div>
+                    </button>
+                    <div class="time-area">
+                        <div class="label">Time</div>
+                        <div class="time" id="timer">00:00.00</div>    
                     </div>
                 </div>
-                <div class="info-area">
-                    <div class="label">Current state</div>
-                    <div class="message" id="message">Simulation not started</div>    
+                <div class="control-panel-row">
+                    <div class="speed-area">
+                        <div class="speed-text">
+                            <div class="label">Speed</div>
+                            <div class="speed-buttons">
+                                <button class="speed-button" data-speed="1"></button>
+                                <button class="speed-button" data-speed="2"></button>
+                                <button class="speed-button" data-speed="3"></button>
+                                <button class="speed-button" data-speed="4"></button>
+                                <button class="speed-button" data-speed="5"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-area">
+                        <div class="label">Current state</div>
+                        <div class="message" id="message">Simulation not started</div>    
+                    </div>
                 </div>
             </div>
         </div>
