@@ -280,6 +280,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let startSimulationButton = document.getElementById('startSimulationButton');
     startSimulationButton.addEventListener('click', async () => {
+        if (pointsOfInterest.start.x === null || pointsOfInterest.start.y === null) {
+            setInfoMessage('Missing start tile!');
+            return;
+        }
+        
+        if (pointsOfInterest.finish.x === null || pointsOfInterest.finish.y === null) {
+            setInfoMessage('Missing finish tile!');
+            return;
+        }
+        
         // console.log('Starting simulation...');
         _simulationPaused = false;
         _simulationRunning = true;
