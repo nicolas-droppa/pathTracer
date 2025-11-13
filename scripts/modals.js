@@ -11,7 +11,7 @@ function generateTestContent(id) {
             <div class="cell use-case"><strong>Prípad použitia</strong></div> 
             <div class="cell use-case-number">UC01</div>
             <div class="cell acceptance-level"><strong>Úroveň splnenia testu</strong></div>
-            <div class="cell acceptance-level-number">Musí – Mal by – Mohol by</div>
+            <div class="cell acceptance-level-number">Musí – <s>Mal by</s> – <s>Mohol by</s></div>
         </div>
 
         <div class="row">
@@ -96,7 +96,7 @@ function generateTestContent(id) {
         <div class="cell use-case"><strong>Prípad použitia</strong></div> 
         <div class="cell use-case-number">UC02</div>
         <div class="cell acceptance-level"><strong>Úroveň splnenia testu</strong></div>
-        <div class="cell acceptance-level-number">Musí – Mal by – Mohol by</div>
+        <div class="cell acceptance-level-number">Musí – <s>Mal by</s> – <s>Mohol by</s></div>
     </div>
 
     <div class="row">
@@ -174,7 +174,7 @@ function generateTestContent(id) {
         <div class="cell use-case"><strong>Prípad použitia</strong></div> 
         <div class="cell use-case-number">UC03</div>
         <div class="cell acceptance-level"><strong>Úroveň splnenia testu</strong></div>
-        <div class="cell acceptance-level-number">Musí – Mal by – Mohol by</div>
+        <div class="cell acceptance-level-number"><s>Musí</s> – Mal by – <s>Mohol by</s></div>
     </div>
 
     <div class="row">
@@ -245,7 +245,7 @@ if (id === 'test4') return `<div class="test-table">
         <div class="cell use-case"><strong>Prípad použitia</strong></div> 
         <div class="cell use-case-number">UC04</div>
         <div class="cell acceptance-level"><strong>Úroveň splnenia testu</strong></div>
-        <div class="cell acceptance-level-number">Musí – Mal by – Mohol by</div>
+        <div class="cell acceptance-level-number">Musí – <s>Mal by</s> – <s>Mohol by</s></div>
     </div>
 
     <div class="row">
