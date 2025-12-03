@@ -280,7 +280,7 @@ html, body {
     width: 6rem;
     padding: 1rem;
     border-right: .0625rem solid var(--color-border);
-    min-height: calc(100vh - 21.5rem);
+    min-height: calc(100vh - 18rem);
     justify-content: space-between;
 }
 
